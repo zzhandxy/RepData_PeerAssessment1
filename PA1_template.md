@@ -5,13 +5,12 @@ output:
     keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-```
+
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 URL = "https://github.com/zzhandxy/RepData_PeerAssessment1/blob/master/activity.zip"
 file <- "activity.zip"
 if (!file.exists(file)) {
@@ -23,14 +22,13 @@ data <- read.csv("activity.csv")
 
 ## What is mean total number of steps taken per day?
 
-```{r, echo = FALSE, message = FALSE}
-library(dplyr)
-library(ggplot2)
-options(scipen = 200)
-Sys.setlocale("LC_TIME", "English")
+
+```
+## [1] "English_United States.1252"
 ```
 
-```{r}
+
+```r
 group_Q2 <- group_by(data, date)
 temp_Q2 <-summarise(group_Q2, Total = sum(all(is.na(steps))))
 temp_Q2 <- filter(temp_Q2, Total == 0)
@@ -41,16 +39,20 @@ g_Q2 + geom_histogram(bins = 25) +
     labs(x = "Total number of steps", y = "Frequency")
 ```
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+
+```r
 Mean_Q2 = mean(sum_Q2$Total)
 Median_Q2 = median(sum_Q2$Total)
 ```
-- The **mean** total number of steps taken per day is `r Mean_Q2`.
-- The **median** total number of steps taken per day is `r Median_Q2`.
+- The **mean** total number of steps taken per day is 10766.1886792.
+- The **median** total number of steps taken per day is 10765.
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 group_Q3 <- group_by(data, interval)
 sum_Q3 <- summarise(group_Q3, Average = mean(steps, na.rm = TRUE))
 
@@ -59,18 +61,23 @@ g + geom_line() +
     labs(x = "Interval", y = "Average number of steps")
 ```
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
+
+```r
 Max_inv <- sum_Q3$interval[which(sum_Q3$Average == max(sum_Q3$Average))]
 ```
--On average across all the days in the dataset, the interval `r Max_inv` contains the **maximum** number of steps.
+-On average across all the days in the dataset, the interval 835 contains the **maximum** number of steps.
 
 ## Imputing missing values
-```{r}
+
+```r
 num_na <- sum(is.na(data$steps))
 ```
-There are `r num_na` missing values in the dataset.
+There are 2304 missing values in the dataset.
 
-```{r}
+
+```r
 fill_na <- merge(data, sum_Q3, by="interval")
 fill_na <- transform(fill_na, steps = ifelse(is.na(steps), Average, steps))
 group_Q4 <- group_by(fill_na, date)
@@ -79,18 +86,22 @@ f <- ggplot(sum_Q4, aes(Total))
 f + geom_histogram()
 ```
 
-```{r}
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+
+```r
 Mean_Q4 = mean(sum_Q4$Total)
 Median_Q4 = median(sum_Q4$Total)
 ```
-- The **mean** total number of steps taken per day is `r Mean_Q4`.
-- The **median** total number of steps taken per day is `r Median_Q4`.
+- The **mean** total number of steps taken per day is 10766.1886792.
+- The **median** total number of steps taken per day is 10766.1886792.
 
-Filling in all of the missing values with the mean for that day has almost no effect on mean and median
+Filling in all of the missing values with the mean for that day has almost no effect on mean and 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 library(lubridate)
 fill_na <- fill_na[, -4]
 fill_na <- fill_na[order(fill_na$date),]
@@ -103,3 +114,5 @@ g_Q5 + geom_line() +
     facet_grid(day~.) +
     labs(x = "interval", y = "Number of steps")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
