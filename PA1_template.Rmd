@@ -88,7 +88,7 @@ Median_Q4 = median(sum_Q4$Total)
 
 Filling in all of the missing values with the mean for that day has almost no effect on mean and median
 
-## Are there differences in activity patterns between weekdays and weekends?
+## Are there differences in activity patterns between weekdays and weekends? 
 
 ```{r}
 library(lubridate)
