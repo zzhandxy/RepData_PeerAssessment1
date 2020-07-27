@@ -96,7 +96,7 @@ Median_Q4 = median(sum_Q4$Total)
 - The **mean** total number of steps taken per day is 10766.1886792.
 - The **median** total number of steps taken per day is 10766.1886792.
 
-Filling in all of the missing values with the mean for that day has almost no effect on mean and 
+Filling in all of the missing values with the mean for that day has almost no effect on mean and median
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
